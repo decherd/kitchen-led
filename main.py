@@ -87,7 +87,7 @@ while True:
     client = connection.accept()[0]
     request = client.recv(1024)
     request = str(request)
-    with open('log.txt', mode='b') as f:
+    with open('log.txt', mode='rb') as f:
         client.send(f)
     client.close()
     actual_time = time.localtime(time.time() + utc_offset)
