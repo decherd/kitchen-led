@@ -89,7 +89,7 @@ while True:
     request = str(request)
     with open('log.txt', mode='rb') as f:
         content = f.read().decode('utf-8')
-    client.send(content)
+    client.send("Hello World!")
     client.close()
     actual_time = time.localtime(time.time() + utc_offset)
     # If it is Sleep Mode
