@@ -26,6 +26,8 @@ def connect():
     print(f'Connected on {ip}')
     return ip
 
+ip = connect()
+
 def open_socket(ip):
     # Open a socket
     address = (ip, 80)
