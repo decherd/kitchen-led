@@ -2,7 +2,6 @@ import time
 import ntptime
 from machine import Pin, PWM
 import network
-import socket
 
 UTC_TIMEZONE = 5
 LEDS_PIN = 32
@@ -14,29 +13,6 @@ actual_time = time.localtime(time.time() + utc_offset)
 
 with open('log.txt', mode='a+') as f:
     f.write(f"Booted up at: {actual_time}")
-
-def connect():
-    #Connect to WLAN
-    wlan = network.WLAN(network.STA_IF)
-    wlan.active(True)
-    wlan.connect('TTLG', '31012023g')
-    while wlan.isconnected() == False:
-        print('Waiting for connection...')
-        sleep(1)
-    ip = wlan.ifconfig()[0]
-    print(f'Connected on {ip}')
-    return ip
-
-ip = connect()
-
-def open_socket(ip):
-    # Open a socket
-    address = (ip, 80)
-    connection = socket.socket()
-    connection.bind(address)
-    connection.listen(1)
-    return connection
-
 
 frequency = 5000
 led = PWM(Pin(LEDS_PIN), frequency)
@@ -81,16 +57,8 @@ SLEEP_MODE_ALARM_MINUTES = 5
 pir = Pin(PIR_PIN, Pin.IN)
 pir.irq(trigger=Pin.IRQ_RISING, handler=handle_interrupt)
 sleep_start = 0
-connection = open_socket(ip)
 
 while True:
-    client = connection.accept()[0]
-    request = client.recv(1024)
-    request = str(request)
-    with open('log.txt', mode='rb') as f:
-        content = f.read().decode('utf-8')
-    client.send("Hello World!")
-    client.close()
     actual_time = time.localtime(time.time() + utc_offset)
     # If it is Sleep Mode
     if (actual_time[3], actual_time[4]) >= SLEEP_MODE_START or (actual_time[3], actual_time[4]) < DAWN_START:
