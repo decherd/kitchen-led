@@ -2,8 +2,6 @@ import time
 import ntptime
 from machine import Pin, PWM
 import network
-from os.path import exists
-
 
 UTC_TIMEZONE = 5
 LEDS_PIN = 32
@@ -14,7 +12,7 @@ utc_offset = UTC_TIMEZONE * 60 * 60
 actual_time = time.localtime(time.time() + utc_offset)
 
 with open('log.txt', mode='a+') as f:
-                f.write(f"Booted up at: {actual_time}")
+    f.write(f"Booted up at: {actual_time}")
 
 def connect():
     #Connect to WLAN
