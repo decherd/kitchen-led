@@ -2,6 +2,7 @@ import time
 import ntptime
 from machine import Pin, PWM
 import network
+import socket
 
 UTC_TIMEZONE = 5
 LEDS_PIN = 32
