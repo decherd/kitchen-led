@@ -13,6 +13,9 @@ ntptime.settime()
 utc_offset = UTC_TIMEZONE * 60 * 60
 actual_time = time.localtime(time.time() + utc_offset)
 
+with open('log.txt' mode='a+') as f:
+                f.write(f"Booted up at: {actual_time}")
+
 def connect():
     #Connect to WLAN
     wlan = network.WLAN(network.STA_IF)
