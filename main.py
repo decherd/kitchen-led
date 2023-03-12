@@ -13,7 +13,7 @@ ntptime.settime()
 utc_offset = UTC_TIMEZONE * 60 * 60
 actual_time = time.localtime(time.time() + utc_offset)
 
-with open('log.txt' mode='a+') as f:
+with open('log.txt', mode='a+') as f:
                 f.write(f"Booted up at: {actual_time}")
 
 def connect():
@@ -86,9 +86,8 @@ while True:
     client = connection.accept()[0]
     request = client.recv(1024)
     request = str(request)
-    if exists('log.txt'):
-        with open('log.txt', 'r') as f:
-            client.send(f)
+    with open('log.txt', mode='r') as f:
+        client.send(f)
     client.close()
     actual_time = time.localtime(time.time() + utc_offset)
     # If it is Sleep Mode
@@ -97,12 +96,12 @@ while True:
             led_ramp_to(SLEEP_MODE_PCT)
             sleep_start = time.time()
             motion = False
-            with open('log.txt' mode='a+') as f:
+            with open('log.txt', mode='a+') as f:
                 f.write(f"Detecting motion at: {actual_time}")
         if sleep_start and (time.time() - sleep_start >= (SLEEP_MODE_ALARM_MINUTES*60)):
             led_ramp_to(0)
             sleep_start = 0
-            with open('log.txt' mode='a+') as f:
+            with open('log.txt', mode='a+') as f:
                 f.write(f"Turning off LED at: {actual_time}")
     # Dawn/Dusk Mode turn up/down if motion for first time or if it was already on
     elif ((actual_time[3], actual_time[4]) >= DAWN_START and (actual_time[3], actual_time[4]) < DAY_START) or (((actual_time[3], actual_time[4]) >= DUSK_START and (actual_time[3], actual_time[4]) < SLEEP_MODE_START)):
