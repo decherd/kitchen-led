@@ -88,7 +88,8 @@ while True:
     request = client.recv(1024)
     request = str(request)
     with open('log.txt', mode='rb') as f:
-        client.send(f)
+        content = f.read()
+    client.send(content)
     client.close()
     actual_time = time.localtime(time.time() + utc_offset)
     # If it is Sleep Mode
